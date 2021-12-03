@@ -1,13 +1,31 @@
 const express = require("express");
 const cors = require("cors");
 
+const { dbConection } = require("../database/config");
+
 class Server {
   constructor() {
     //llamo a otra variable y le asigno todos los metodos de express.
     this.app = express();
+    //ruta auth
+    this.authPath = "/api/auth";
+    //creamos la variable para darle el api a nuestra direc.
+    this.usariosPath = "/api/usuarios";
+    //ruta categorias
+    this.categoriasPath = "/api/categorias";
+
+    //Conexion
+    this.conectarDB();
 
     //middlewares
     this.middlewares();
+    //rutas
+    this.routes();
+  }
+
+  //Conectando con la BD
+  async conectarDB() {
+    await dbConection();
   }
 
   middlewares() {
@@ -19,6 +37,12 @@ class Server {
     this.app.use(express.json());
     //otra manera para parcear |acepta todo tipo de texto en postman|
     //this.app.use(express.urlencoded({extended:true}))
+  }
+
+  routes() {
+    this.app.use(this.usariosPath, require("../routes/usuarios"));
+    this.app.use(this.authPath, require("../routes/auth"));
+    this.app.use(this.categoriasPath, require("../routes/categorias"));
   }
 
   listen() {
