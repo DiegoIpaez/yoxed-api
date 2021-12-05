@@ -47,8 +47,6 @@ router.post(
     ).isLength({
       max: 500,
     }),
-    check("id", "No es un ID valido").isMongoId(),
-    check("id").custom(yoxExiste),
     validarCampos,
   ],
   comentarioPost
