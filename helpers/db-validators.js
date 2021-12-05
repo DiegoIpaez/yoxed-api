@@ -1,5 +1,7 @@
 const Usuario = require("../models/usuario");
 const Categoria = require("../models/categoria");
+const Yox = require("../models/yox");
+const Comentario = require("../models/comentario");
 
 const emailExiste = async (email = "") => {
   const existeEmail = await Usuario.findOne({ email });
@@ -27,8 +29,28 @@ const categoriaExiste = async (id) => {
   }
 };
 
+//----------------------------------------------------------------
+const yoxExiste = async (id) => {
+  const existeYox = await Yox.findById(id);
+
+  if (!existeYox) {
+    throw new Error(`El id ${id} no existe`);
+  }
+};
+
+//----------------------------------------------------------------
+const comentarioExiste = async (id) => {
+  const existeComent = await Comentario.findById(id);
+
+  if (!existeComent) {
+    throw new Error(`El id ${id} no existe`);
+  }
+};
+
 module.exports = {
   emailExiste,
   idExiste,
   categoriaExiste,
+  yoxExiste,
+  comentarioExiste,
 };

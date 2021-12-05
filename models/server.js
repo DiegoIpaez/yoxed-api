@@ -13,6 +13,10 @@ class Server {
     this.usariosPath = "/api/usuarios";
     //ruta categorias
     this.categoriasPath = "/api/categorias";
+    //ruta blog
+    this.yoxsPath = "/api/yoxs";
+    //ruta comentarios
+    this.comentariosPath = "/api/comentarios"
 
     //Conexion
     this.conectarDB();
@@ -43,6 +47,8 @@ class Server {
     this.app.use(this.usariosPath, require("../routes/usuarios"));
     this.app.use(this.authPath, require("../routes/auth"));
     this.app.use(this.categoriasPath, require("../routes/categorias"));
+    this.app.use(this.yoxsPath, require("../routes/yoxs"))
+    this.app.use(this.comentariosPath, require("../routes/comentarios"))
   }
 
   listen() {
