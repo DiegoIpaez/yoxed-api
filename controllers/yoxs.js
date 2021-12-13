@@ -3,24 +3,10 @@ const { request, response } = require("express");
 const Yox = require("../models/yox");
 
 const yoxGet = async (req = request, res = response) => {
-  let { limite = 4, desde = 0 } = req.query;
 
-  limite = Number(limite);
-  desde = Number(desde);
-
-  if (isNaN(limite)) {
-    limite = 4;
-  }
-  if (isNaN(desde)) {
-    desde = 0;
-  }
-
-  //------------------------------------------
   const [total, yoxs] = await Promise.all([
     Yox.countDocuments({ estado: true }),
     Yox.find({ estado: true })
-      .skip(desde)
-      .limit(limite)
       .populate("usuario", "nombre email")
       .populate("categoria", "nombre"),
   ]);
@@ -50,6 +36,20 @@ const yoxGetIdCateg = async (req = request, res = response) => {
   const [total, yox] = await Promise.all([
     Yox.countDocuments(Yox.find({ categoria: id, estado: true })),
     Yox.find({ categoria: id, estado: true }),
+  ]);
+
+  res.json({
+    Total: total,
+    yox,
+  });
+};
+
+const yoxGetIdUser = async (req, res = response) => {
+  const { id } = req.params;
+
+  const [total, yox] = await Promise.all([
+    Yox.countDocuments(Yox.find({ usuario: id, estado: true })),
+    Yox.find({ usuario: id, estado: true }),
   ]);
 
   res.json({
@@ -120,6 +120,7 @@ module.exports = {
   yoxGet,
   yoxGetId,
   yoxGetIdCateg,
+  yoxGetIdUser,
   yoxPost,
   yoxPut,
   yoxDel,

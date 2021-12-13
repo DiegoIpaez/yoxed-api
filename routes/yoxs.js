@@ -8,6 +8,7 @@ const {
   yoxGet,
   yoxGetId,
   yoxGetIdCateg,
+  yoxGetIdUser,
   yoxPost,
   yoxPut,
   yoxDel,
@@ -36,6 +37,8 @@ router.get(
   ],
   yoxGetIdCateg
 );
+
+router.get("/user/:id", yoxGetIdUser);
 
 router.post(
   "/",
