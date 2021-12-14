@@ -32,7 +32,10 @@ const comentarioGetIdYox = async (req = request, res = response) => {
 
   const [total, comentario] = await Promise.all([
     Comentario.countDocuments(Comentario.find({ yox: id, estado: true })),
-    Comentario.find({ yox: id, estado: true }),
+    Comentario.find({ yox: id, estado: true }).populate(
+      "usuario",
+      "nombre email"
+    ),
   ]);
 
   res.json({

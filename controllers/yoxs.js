@@ -3,7 +3,6 @@ const { request, response } = require("express");
 const Yox = require("../models/yox");
 
 const yoxGet = async (req = request, res = response) => {
-
   const [total, yoxs] = await Promise.all([
     Yox.countDocuments({ estado: true }),
     Yox.find({ estado: true })
@@ -35,7 +34,9 @@ const yoxGetIdCateg = async (req = request, res = response) => {
 
   const [total, yox] = await Promise.all([
     Yox.countDocuments(Yox.find({ categoria: id, estado: true })),
-    Yox.find({ categoria: id, estado: true }),
+    Yox.find({ categoria: id, estado: true })
+      .populate("usuario", "nombre email")
+      .populate("categoria", "nombre"),
   ]);
 
   res.json({
@@ -60,7 +61,6 @@ const yoxGetIdUser = async (req, res = response) => {
 
 const yoxPost = async (req = request, res = response) => {
   const { estado, usuario, ...body } = req.body;
-
 
   const yoxDB = await Yox.findOne({
     titulo: body.titulo.toUpperCase(),
